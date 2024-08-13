@@ -1,0 +1,15 @@
+{  
+  "name": "@ares/datasource-files",  
+  "version": "1.0.0",  
+  "description": ,  
+  "main": "index.js",  
+  "scripts": {  
+    "test": "echo \"Error: no test specified\" && exit 1"  
+  },  
+  "author": "Roberto Stefani",  
+  "license": "MIT"  
+  "repository": { 
+      "type": "git", 
+      "url": "git+https://github.com/rstefani87info/ares-datasource-files.git" 
+  }, 
+} 
