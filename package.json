@@ -1,15 +1,24 @@
-{  
-  "name": "@ares/datasource-files",  
-  "version": "1.0.0",  
-  "description": ,  
-  "main": "index.js",  
-  "scripts": {  
-    "test": "echo \"Error: no test specified\" && exit 1"  
-  },  
-  "author": "Roberto Stefani",  
-  "license": "MIT"  
-  "repository": { 
-      "type": "git", 
-      "url": "git+https://github.com/rstefani87info/ares-datasource-files.git" 
-  }, 
-} 
+{
+  "name": "@ares/datasource-files",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rstefani87info/ares-datasource-files.git"
+  },
+  "author": "Roberto Stefani",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rstefani87info/ares-datasource-files/issues"
+  },
+  "homepage": "https://github.com/rstefani87info/ares-datasource-files#readme",
+  "dependencies": {
+    "@ares/core": "github:rstefani87info/ares-core#master",
+    "@ares/files": "github:rstefani87info/ares-files#master"
+  }
+}
