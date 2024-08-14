@@ -1,3 +1,10 @@
+#eclipse 
+.project
+.settings/
+
+#vscode
+.vscode/
+
 # Logs
 logs
 *.log
