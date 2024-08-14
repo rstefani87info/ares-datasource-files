@@ -4,6 +4,7 @@ import {
   getFileContent,
   getFile,
 } from "@ares/files";
+import {asyncConsole} from '@ares/core/console.js';
 const extensionMapping = {
   mariadb: "sql",
   mysql: "sql",
