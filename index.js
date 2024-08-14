@@ -50,9 +50,7 @@ export async function assembleDatasource(datasourceFile) {
  * Initialyze db object
  *
  */
-export async function initAllDatasources() {
-  const app = (await import(import.meta.resolve("../../../app.js"))).default;
-  const datasourcesRoot = app.datasourcesRoot;
+export async function initAllDatasources(datasourcesRoot) {
   const files = getFilesRecursively(
     datasourcesRoot,
     /(.*[\/\\]){0,1}datasource\.js/i,
@@ -60,8 +58,9 @@ export async function initAllDatasources() {
   );
   const array = [];
   for (const file of files) {
-    asyncConsole.log("datasources", 'connection file found: "' + file + ";");
-    array.push(assembleDatasource(getAbsolutePath(file)));
+    const completePath=getFile(datasourcesRoot,file);
+    asyncConsole.log("datasources", 'connection file found: "' + completePath + ";");
+    array.push(assembleDatasource(completePath));
   }
   asyncConsole.output("datasources");
   return array;
