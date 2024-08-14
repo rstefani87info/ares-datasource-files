@@ -60,7 +60,7 @@ export async function initAllDatasources() {
   const array = [];
   for (const file of files) {
     asyncConsole.log("datasources", 'connection file found: "' + file + ";");
-    array.push(assembleDatasource(file));
+    array.push(assembleDatasource(getFile(datasourcesRoot, file)));
   }
   asyncConsole.output("datasources");
   return array;
