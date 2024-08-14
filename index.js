@@ -3,6 +3,7 @@ import {
   getParent,
   getFileContent,
   getFile,
+  getAbsolutePath,
 } from "@ares/files";
 import {asyncConsole} from '@ares/core/console.js';
 const extensionMapping = {
@@ -60,7 +61,7 @@ export async function initAllDatasources() {
   const array = [];
   for (const file of files) {
     asyncConsole.log("datasources", 'connection file found: "' + file + ";");
-    array.push(assembleDatasource(getFile(datasourcesRoot, file)));
+    array.push(assembleDatasource(getAbsolutePath(file)));
   }
   asyncConsole.output("datasources");
   return array;
