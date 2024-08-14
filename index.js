@@ -15,12 +15,12 @@ const extensionMapping = {
   sqlite: "sql",
   rest: "url",
 };
-export async function assembleDatasource(datasourceFile) {
+export async function assembleDatasource(datasourceAbsoluteFile) {
   const datasourceObject = (
-    await import("file://" + import.meta.resolve(datasourceFile))
+    await import("file://" + datasourceAbsoluteFile)
   ).default;
   if (!datasourceObject.path)
-    datasourceObject.path = getParent(import.meta.resolve(datasourceFile));
+    datasourceObject.path = getParent(datasourceAbsoluteFile);
   const extension = extensionMapping[datasourceObject.driver];
   for (const file of getFilesRecursively(
     datasourceObject.path,
