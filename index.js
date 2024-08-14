@@ -15,12 +15,12 @@ const extensionMapping = {
   sqlite: "sql",
   rest: "url",
 };
-export async function assembleDatasource(datasourceAbsoluteFile) {
+export async function assembleDatasource(datasourceFile) {
   const datasourceObject = (
-    await import("file://" + datasourceAbsoluteFile)
+    await import("file://" + datasourceFile)
   ).default;
   if (!datasourceObject.path)
-    datasourceObject.path = getParent(datasourceAbsoluteFile);
+    datasourceObject.path = getParent(import.meta.resolve(datasourceFile));
   const extension = extensionMapping[datasourceObject.driver];
   for (const file of getFilesRecursively(
     datasourceObject.path,
@@ -35,8 +35,9 @@ export async function assembleDatasource(datasourceAbsoluteFile) {
     const fileName = file
       .replaceAll(new RegExp("\\.(" + extension + ")$", "i"), "")
       .replaceAll(/\/|\\/i, "_");
+    const completeFilePath = getFile(datasourceObject.path, filePath);
     datasourceObject.queries[fileName] = (
-      await import("file://" + filePath + ".js")
+      await import("file://" + completeFilePath + ".js")
     ).default;
     datasourceObject.queries[fileName].query = getFileContent(completeFilePath);
   }
@@ -57,9 +58,8 @@ export async function initAllDatasources(datasourcesRoot) {
   );
   const array = [];
   for (const file of files) {
-    const completePath=getFile(datasourcesRoot,file);
-    asyncConsole.log("datasources", 'connection file found: "' + completePath + ";");
-    array.push(assembleDatasource(completePath));
+    asyncConsole.log("datasources", 'connection file found: "' + file + ";");
+    array.push(assembleDatasource(file));
   }
   asyncConsole.output("datasources");
   return array;
