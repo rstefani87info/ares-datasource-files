@@ -35,9 +35,8 @@ export async function assembleDatasource(datasourceAbsoluteFile) {
     const fileName = file
       .replaceAll(new RegExp("\\.(" + extension + ")$", "i"), "")
       .replaceAll(/\/|\\/i, "_");
-    const completeFilePath = getFile(datasourceObject.path, filePath);
     datasourceObject.queries[fileName] = (
-      await import("file://" + completeFilePath + ".js")
+      await import("file://" + filePath + ".js")
     ).default;
     datasourceObject.queries[fileName].query = getFileContent(completeFilePath);
   }
