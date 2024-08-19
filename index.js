@@ -4,6 +4,8 @@ import {
   getFileContent,
   getFile,
   getAbsolutePath,
+  getFileName,
+  getRelativePathFrom,
 } from "@ares/files";
 import {asyncConsole} from '@ares/core/console.js';
 const extensionMapping = {
@@ -16,30 +18,28 @@ const extensionMapping = {
   rest: "url",
 };
 export async function assembleDatasource(datasourceFile) {
-  const datasourceObject = (
+  const datasourceObject = {...(
     await import("file://" + datasourceFile)
-  ).default;
+  )};
+  
   if (!datasourceObject.path)
-    datasourceObject.path = getParent(import.meta.resolve(datasourceFile));
-  const extension = extensionMapping[datasourceObject.driver];
+    datasourceObject.path = getParent(datasourceFile);
+  const extension = Object.entries(datasourceObject.environments).map(([key, databases]) => 
+    Object.entries(databases).map(([key1, value]) =>extensionMapping[value.driver]).join("|")
+  ).join("|");
   for (const file of getFilesRecursively(
     datasourceObject.path,
-    `/*.(${extension})/i`,
+    new RegExp( `.*\.(${extension})$`, "i"),
     true
   )) {
     datasourceObject.queries = datasourceObject.queries || {};
-    const filePath = path.join(
-      datasourceObject.path,
-      file.replaceAll(new RegExp(/\.\w+$/i), "")
-    );
-    const fileName = file
-      .replaceAll(new RegExp("\\.(" + extension + ")$", "i"), "")
-      .replaceAll(/\/|\\/i, "_");
-    const completeFilePath = getFile(datasourceObject.path, filePath);
+    const completeFilePath =  file.replaceAll(new RegExp(/\.\w+$/gi), "");
+    const fileName = getFileName(file);
+    const filePath = getRelativePathFrom( completeFilePath,datasourceObject.path);
     datasourceObject.queries[fileName] = (
       await import("file://" + completeFilePath + ".js")
     ).default;
-    datasourceObject.queries[fileName].query = getFileContent(completeFilePath);
+    datasourceObject.queries[fileName].query = getFileContent(file);
   }
   return datasourceObject;
 }
@@ -59,9 +59,10 @@ export async function initAllDatasources(datasourcesRoot) {
   const array = [];
   for (const file of files) {
     asyncConsole.log("datasources", 'connection file found: "' + file + ";");
-    array.push(assembleDatasource(file));
+    array.push(await assembleDatasource(file));
   }
-  asyncConsole.output("datasources");
+  asyncConsole.output("datasources",array);
+  console.log("datasources",array);
   return array;
 }
 
