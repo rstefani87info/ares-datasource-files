@@ -25,24 +25,27 @@ export async function assembleDatasource(datasourceFile) {
   if (!datasourceObject.path)
     datasourceObject.path = getParent(datasourceFile);
   const extension = Object.entries(datasourceObject.environments).map(([key, databases]) => 
-    Object.entries(databases).map(([key1, value]) =>extensionMapping[value.driver]).join("|")
-  ).join("|");
-  for (const file of getFilesRecursively(
-    datasourceObject.path,
-    new RegExp( `.*\.(${extension})$`, "i"),
-    true
-  )) {
-    datasourceObject.queries = datasourceObject.queries || {};
-    const completeFilePath =  file.replaceAll(new RegExp(/\.\w+$/gi), "");
-    const fileName = getFileName(file);
-    const mapperFileOnject = (
-      await import("file://" + completeFilePath + ".js")
-    ).default;
-    if(mapperFileOnject){
-        datasourceObject.queries[fileName] = mapperFileOnject;
-        datasourceObject.queries[fileName].query = getFileContent(file);
+    Object.entries(databases).map(([key1, value]) =>value.queryExtensions)?.join("|") || ''
+  )?.join("|") || '';
+  if(extension)
+  {
+      for (const file of getFilesRecursively(
+      datasourceObject.path,
+      new RegExp( `.*\.(${extension})$`, "i"),
+      true
+    )) {
+      datasourceObject.queries = datasourceObject.queries || {};
+      const completeFilePath =  file.replaceAll(new RegExp(/\.\w+$/gi), "");
+      const fileName = getFileName(file);
+      const mapperFileOnject = (
+        await import("file://" + completeFilePath + ".js")
+      ).default;
+      if(mapperFileOnject){
+          datasourceObject.queries[fileName] = mapperFileOnject;
+          datasourceObject.queries[fileName].query = getFileContent(file);
+      }
     }
-  }
+  }  
   return datasourceObject;
 }
 
