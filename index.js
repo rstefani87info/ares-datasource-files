@@ -35,11 +35,13 @@ export async function assembleDatasource(datasourceFile) {
     datasourceObject.queries = datasourceObject.queries || {};
     const completeFilePath =  file.replaceAll(new RegExp(/\.\w+$/gi), "");
     const fileName = getFileName(file);
-    const filePath = getRelativePathFrom( completeFilePath,datasourceObject.path);
-    datasourceObject.queries[fileName] = (
+    const mapperFileOnject = (
       await import("file://" + completeFilePath + ".js")
     ).default;
-    datasourceObject.queries[fileName].query = getFileContent(file);
+    if(mapperFileOnject){
+        datasourceObject.queries[fileName] = mapperFileOnject;
+        datasourceObject.queries[fileName].query = getFileContent(file);
+    }
   }
   return datasourceObject;
 }
