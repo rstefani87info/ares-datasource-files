@@ -67,8 +67,7 @@ export async function initAllDatasources(datasourcesRoot) {
     array.push(await assembleDatasource(file));
     asyncConsole.output("datasources",array);
   }
-  asyncConsole.output("datasources",array);
-  console.log("datasources",array);
+  
   return array;
 }
 
