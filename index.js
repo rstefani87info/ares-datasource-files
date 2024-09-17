@@ -30,18 +30,18 @@ export async function assembleDatasource(datasourceFile) {
   if(extension)
   {
       for (const file of getFilesRecursively(
-      datasourceObject.path,
-      new RegExp( `.*\.(${extension})$`, "i"),
-      true
-    )) {
+        datasourceObject.path,
+        new RegExp( `.*\.(${extension})$`, "i"),
+        true
+      )) {
       datasourceObject.queries = datasourceObject.queries || {};
-      const completeFilePath =  file.replaceAll(new RegExp(/\.\w+$/gi), "");
-      const fileName = getFileName(file);
-      const mapperFileOnject = (
+      const completeFilePath =  file.replaceAll(/\.\w+$/gi, "");
+      const fileName = getFileName(completeFilePath);
+      const mapperFileObject = (
         await import("file://" + completeFilePath + ".js")
       ).default;
-      if(mapperFileOnject){
-          datasourceObject.queries[fileName] = mapperFileOnject;
+      if(mapperFileObject){
+          datasourceObject.queries[fileName] = mapperFileObject;
           datasourceObject.queries[fileName].query = getFileContent(file);
       }
     }
@@ -65,6 +65,7 @@ export async function initAllDatasources(datasourcesRoot) {
   for (const file of files) {
     asyncConsole.log("datasources", 'connection file found: "' + file + ";");
     array.push(await assembleDatasource(file));
+    asyncConsole.output("datasources",array);
   }
   asyncConsole.output("datasources",array);
   console.log("datasources",array);
