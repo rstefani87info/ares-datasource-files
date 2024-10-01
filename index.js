@@ -65,9 +65,8 @@ export async function initAllDatasources(datasourcesRoot) {
   for (const file of files) {
     asyncConsole.log("datasources", 'connection file found: "' + file + ";");
     array.push(await assembleDatasource(file));
-    asyncConsole.output("datasources",array);
   }
-  
+  asyncConsole.output("datasources",array);
   return array;
 }
 
