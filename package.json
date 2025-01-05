@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/rstefani87info/ares-datasource-files#readme",
   "dependencies": {
-    "@ares/core": "github:rstefani87info/ares-core#master",
-    "@ares/files": "github:rstefani87info/ares-files#master"
+    "@ares/core": "git+https://github.com/rstefani87info/ares-core.git#master",
+    "@ares/files": "git+https://github.com/rstefani87info/ares-files.git#master"
   }
 }
