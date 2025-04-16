@@ -85,12 +85,6 @@ export function serializeDatasource(datasource, serializationDir) {
   }
   serializedContent += `},\n`;
 }
-
-const projectRoot = getAbsolutePath(getParent(import.meta.url));
-const datasourceRoot = getAbsolutePath(
-  getRelativePathFrom(projectRoot, "datasource-files")
-);
-export const datasources = await initAllDatasources(datasourceRoot);
-export const datasourcesDir = getAbsolutePath(
-  getRelativePathFrom(projectRoot, "datasources")
-);
+// const projectRoot = getParent(getParent(getParent(getParent(import.meta.url).replace('file:\\',''))));
+// export const datasourceRoot = getFile(projectRoot, "datasources");
+// export function datasources =  initAllDatasources(datasourceRoot);
