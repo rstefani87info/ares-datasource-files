@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "type": "module",
+  "bin": {
+    "ares-datasource-current-schemas": "./cli.js"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test ./test/current-schemas.test.js ./test/privacy-maintenance-install.test.js",
+    "ares-datasource-current-schemas": "ares-datasource-current-schemas"
   },
   "repository": {
     "type": "git",
@@ -19,6 +23,7 @@
   "homepage": "https://github.com/rstefani87info/ares-datasource-files#readme",
   "dependencies": {
     "@ares/core": "workspace:^",
-    "@ares/files": "workspace:^"
+    "@ares/files": "workspace:^",
+    "@ares/scd": "workspace:^"
   }
 }
